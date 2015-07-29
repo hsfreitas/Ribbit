@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.Parse;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -40,6 +42,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "vgEnQe5mkye8HtUjYSnfhlkdOrA9lG5w8deJHoby", "mOgUu1lJGhde3VsnWqIyEQudqvrUO1i7yaTUYt6T");
+
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
