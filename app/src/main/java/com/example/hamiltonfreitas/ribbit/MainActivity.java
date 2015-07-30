@@ -43,12 +43,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this, "vgEnQe5mkye8HtUjYSnfhlkdOrA9lG5w8deJHoby", "mOgUu1lJGhde3VsnWqIyEQudqvrUO1i7yaTUYt6T");
 
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
 
