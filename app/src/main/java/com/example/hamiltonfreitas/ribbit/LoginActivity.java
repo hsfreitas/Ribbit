@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class LoginActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -54,17 +55,19 @@ public class LoginActivity extends ActionBarActivity {
 
                 }else{
                     //Login
+                    setProgressBarIndeterminateVisibility(true);
                     ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser user, ParseException e) {
-                            if (e == null){
+                            setProgressBarIndeterminateVisibility(false);
+                            if (e == null) {
                                 //Sucess
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-                            }else{
-                                AlertDialog.Builder  builder = new AlertDialog.Builder(LoginActivity.this);
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage(e.getMessage())
                                         .setTitle(R.string.login_error_title)
                                         .setPositiveButton(android.R.string.ok, null);

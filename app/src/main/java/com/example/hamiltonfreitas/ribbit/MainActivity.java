@@ -3,6 +3,7 @@ package com.example.hamiltonfreitas.ribbit;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseUser;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -46,15 +47,23 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
         ParseUser currentUser = ParseUser.getCurrentUser();
 
-        setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+
+       if(currentUser == null){
+           navigateToLogin();
+
+        } else{
+            Log.i(TAG, currentUser.getUsername());
+
+
+       }
+
+
+
 
 
 
@@ -68,6 +77,13 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,6 +91,8 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -84,8 +102,10 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            navigateToLogin();
+            //return true;
         }
 
         return super.onOptionsItemSelected(item);
